@@ -1,2 +1,6 @@
-# compare_excel_data
-compare excel data script
+# 一个简单的对比多个excel数据的脚本
+
+​	当前阶段仅支持输入相对路径写入excel文件，原因是我懒得处理差异excel生成时的名字。
+
+  有手就行，后续再完善
+
