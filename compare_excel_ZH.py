@@ -17,8 +17,6 @@ def get_out_trade_no(wb):
     excel_out_trade_no = []
     for cellobj in sheet['A']:
         excel_out_trade_no.append(cellobj.value)
-        # for i in range(len(excel_out_trade_no)):#列表遍历
-        # print(excel_out_trade_no[i])
     return excel_out_trade_no
 
 i = int(input("请输入需要对比表的数量"))
@@ -29,12 +27,11 @@ for n in range(0, i):
         "请输入需要对比的表，相对路径直接输入./+表名（每次输入一个excel）")
     a = excelname1
     excelname.append(a)
-# print (excelname)
 for n in range(0, i):
-    #批量把表活跃化并提取数据
+
     locals()[str(n)+"_wb"] = openpyxl.load_workbook(excelname[n])
     locals()[str(n)+"get_out_trade_no"] = get_out_trade_no(locals()[str(n)+"_wb"])
-    #批量格式化列表数据
+
     locals()[str(n)+"S"] = set(locals()[str(n)+"get_out_trade_no"])
 
 for n in range(0,i-1,1):
@@ -78,7 +75,7 @@ for n in range(0,i-1,1):
             print(locals()[str(n)+"S"])
             print(locals()[str(j)+"S"])
             difference = list(locals()[str(n)+"S"] ^ locals()[str(j)+"S"])
-            print("=======================存在差异的订单号如下==>2==========================\n")
+            print("=======================存在差异的数据如下==>2==========================\n")
             print(excelname[n]+"（A）表存在而"+excelname[j]+"(B)表不存在的差异数据")
             for x in locals()[str(n)+"S"].intersection(difference):
                 print(x)
