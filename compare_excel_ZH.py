@@ -41,8 +41,8 @@ for n in range(0,i-1,1):
 
     if i==2:
         difference = list(locals()[str(0)+"S"] ^ locals()[str(1)+"S"])
-        print("=======================存在差异的订单号如下===2==========================\n")
-        print(excelname[0]+"表存在而"+excelname[1]+"表不存在的订单号")
+        print("=======================存在差异的数据如下===2==========================\n")
+        print(excelname[0]+"表存在而"+excelname[1]+"表不存在的差异数据")
         for x in locals()[str(1)+"S"].intersection(difference):
             print(x)
             
@@ -52,9 +52,12 @@ for n in range(0,i-1,1):
                 if cellobj.value in difference:
                     cellobj.font = Font(color=colors.BLACK,italic=True,bold=True)
                     cellobj.fill = PatternFill("solid",fgColor="FF0000")
+                    locals()[str(0)+"xlsx"] = str(excelname[0])
+                    xlsxname = re.findall(r"./(.+?).xlsx" , locals()[str(0)+"xlsx"])
+                    locals()[str(0)+"_wb"].save("./"+str(xlsxname)+"_Difference.xlsx")
                     
 
-        print(excelname[1]+"表存在而"+excelname[0]+"表不存在的订单号")
+        print(excelname[1]+"表存在而"+excelname[0]+"表不存在的差异数据")
         for y in locals()[str(0)+"S"].intersection(difference):
             print(y)
 
@@ -64,9 +67,9 @@ for n in range(0,i-1,1):
                 if cellobj.value in difference:
                     cellobj.font = Font(color=colors.BLACK,italic=True,bold=True)
                     cellobj.fill = PatternFill("solid",fgColor="FF0000")
-                    
-        locals()[str(0)+"_wb"].save("./第一张表_Difference.xlsx")
-        locals()[str(1)+"_wb"].save("./第二张表_Difference.xlsx")
+                    locals()[str(1)+"xlsx"] = str(excelname[1])
+                    xlsxname = re.findall(r"./(.+?).xlsx" , locals()[str(1)+"xlsx"])
+                    locals()[str(1)+"_wb"].save("./"+str(xlsxname)+"_Difference.xlsx")
         break
     
     if i>2:
@@ -76,7 +79,7 @@ for n in range(0,i-1,1):
             print(locals()[str(j)+"S"])
             difference = list(locals()[str(n)+"S"] ^ locals()[str(j)+"S"])
             print("=======================存在差异的订单号如下==>2==========================\n")
-            print(excelname[n]+"（A）表存在而"+excelname[j]+"(B)表不存在的订单号")
+            print(excelname[n]+"（A）表存在而"+excelname[j]+"(B)表不存在的差异数据")
             for x in locals()[str(n)+"S"].intersection(difference):
                 print(x)
 
@@ -91,7 +94,7 @@ for n in range(0,i-1,1):
                         locals()[str(n)+"_wb"].save("./"+str(xlsxname)+"_Difference.xlsx")
 
 
-            print(excelname[j]+"(B)表存在而"+excelname[n]+"(A)表不存在的订单号")
+            print(excelname[j]+"(B)表存在而"+excelname[n]+"(A)表不存在的差异数据")
             for y in locals()[str(j)+"S"].intersection(difference):
                 print(y)
                 locals()["sheet"+str(j)] = locals()[str(j)+"_wb"].active
