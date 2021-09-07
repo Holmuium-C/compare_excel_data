@@ -18,7 +18,6 @@ for n in range(0, i):
         "请输入需要对比的表，相对路径直接输入./+表名（每次输入一个excel）")
     a = excelname1
     excelname.append(a)
-# print (excelname)
 
 l = input("请输入需要对比的列")
 
@@ -115,7 +114,5 @@ def get_out_trade_no(wb):
     excel_out_trade_no = []
     for cellobj in sheet[ '%s' % l]:
         excel_out_trade_no.append(cellobj.value)
-        # for i in range(len(excel_out_trade_no)):#列表遍历
-        # print(excel_out_trade_no[i])
     return excel_out_trade_no
 
