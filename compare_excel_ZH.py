@@ -9,15 +9,6 @@ from openpyxl.styles import PatternFill
 from openpyxl.styles import colors
 from openpyxl.styles import Font, Color
 
-##循环求差异
-
-def get_out_trade_no(wb):
-    sheet = wb.sheetnames
-    sheet = wb.active
-    excel_out_trade_no = []
-    for cellobj in sheet['A']:
-        excel_out_trade_no.append(cellobj.value)
-    return excel_out_trade_no
 
 i = int(input("请输入需要对比表的数量"))
 excelname = []
@@ -27,11 +18,15 @@ for n in range(0, i):
         "请输入需要对比的表，相对路径直接输入./+表名（每次输入一个excel）")
     a = excelname1
     excelname.append(a)
-for n in range(0, i):
+# print (excelname)
 
+l = input("请输入需要对比的列")
+
+for n in range(0, i):
+    #批量把表活跃化并提取数据
     locals()[str(n)+"_wb"] = openpyxl.load_workbook(excelname[n])
     locals()[str(n)+"get_out_trade_no"] = get_out_trade_no(locals()[str(n)+"_wb"])
-
+    #批量格式化列表数据
     locals()[str(n)+"S"] = set(locals()[str(n)+"get_out_trade_no"])
 
 for n in range(0,i-1,1):
@@ -45,7 +40,7 @@ for n in range(0,i-1,1):
             
             sheet0 = locals()[str(0)+"_wb"].active
             sheet0Value = []
-            for cellobj in sheet0['A']:
+            for cellobj in sheet0[ '%s' % l]:
                 if cellobj.value in difference:
                     cellobj.font = Font(color=colors.BLACK,italic=True,bold=True)
                     cellobj.fill = PatternFill("solid",fgColor="FF0000")
@@ -60,7 +55,7 @@ for n in range(0,i-1,1):
 
             sheet1 = locals()[str(1)+"_wb"].active
             sheet1Value = []
-            for cellobj in sheet1['A']:
+            for cellobj in sheet1[ '%s' % l]:
                 if cellobj.value in difference:
                     cellobj.font = Font(color=colors.BLACK,italic=True,bold=True)
                     cellobj.fill = PatternFill("solid",fgColor="FF0000")
@@ -75,13 +70,13 @@ for n in range(0,i-1,1):
             print(locals()[str(n)+"S"])
             print(locals()[str(j)+"S"])
             difference = list(locals()[str(n)+"S"] ^ locals()[str(j)+"S"])
-            print("=======================存在差异的数据如下==>2==========================\n")
+            print("=======================存在差异的订单号如下==>2==========================\n")
             print(excelname[n]+"（A）表存在而"+excelname[j]+"(B)表不存在的差异数据")
             for x in locals()[str(n)+"S"].intersection(difference):
                 print(x)
 
                 locals()["sheet"+str(n)] = locals()[str(n)+"_wb"].active
-                for cellobj in locals()["sheet"+str(n)]['A']:
+                for cellobj in locals()["sheet"+str(n)][ '%s' % l]:
                     if cellobj.value in difference:
                         cellobj.font = Font(color=colors.BLACK,italic=True,bold=True)
                         cellobj.fill = PatternFill("solid",fgColor="FF0000")
@@ -95,7 +90,7 @@ for n in range(0,i-1,1):
             for y in locals()[str(j)+"S"].intersection(difference):
                 print(y)
                 locals()["sheet"+str(j)] = locals()[str(j)+"_wb"].active
-                for cellobj in locals()["sheet"+str(j)]['A']:
+                for cellobj in locals()["sheet"+str(j)][ '%s' % l]:
                     if cellobj.value in difference:
                         cellobj.font = Font(color=colors.BLACK,italic=True,bold=True)
                         cellobj.fill = PatternFill("solid",fgColor="FF0000")
@@ -110,4 +105,17 @@ print("差异excel文件已保存至相对路径")
 ip = input("\n\n\n=========输入0退出=========\n")
 if ip  == "0":
     sys.exit(0)
+    
+    
+##循环求差异
+
+def get_out_trade_no(wb):
+    sheet = wb.sheetnames
+    sheet = wb.active
+    excel_out_trade_no = []
+    for cellobj in sheet[ '%s' % l]:
+        excel_out_trade_no.append(cellobj.value)
+        # for i in range(len(excel_out_trade_no)):#列表遍历
+        # print(excel_out_trade_no[i])
+    return excel_out_trade_no
 
